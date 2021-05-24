@@ -1,5 +1,9 @@
 # helm-sigstore
 
+[![Build Status](https://github.com/sigstore/helm-sigstore/workflows/CI/badge.svg?branch=main)](https://github.com/sigstore/helm-sigstore/actions?workflow=CI)
+
+Integration of [Helm](https://helm.sh/) and [sigstore](https://sigstore.dev/).
+
 ## Security
 
 Should you discover any security issues, please refer to sigstores [security
