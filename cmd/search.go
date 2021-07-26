@@ -31,7 +31,7 @@ func NewSearchCmd() *cobra.Command {
 
 	// searchCmd represents the upload command
 	searchCmd := &cobra.Command{
-		Use:   "search",
+		Use:   "search [PATH_TO_PACKAGED_CHART]",
 		Short: "Search for a Signed Helm Chart",
 		RunE: func(cmd *cobra.Command, args []string) error {
 
@@ -65,9 +65,9 @@ func NewSearchCmd() *cobra.Command {
 
 			fmt.Println("The Following Records were Found")
 
-			fmt.Println(fmt.Sprintf("\nRekor Server: %s", searchOptions.RekorServer))
+			fmt.Printf("\nRekor Server: %s", searchOptions.RekorServer)
 			for _, uuid := range uuids {
-				fmt.Println(fmt.Sprintf("Rekor UUID: %s", uuid))
+				fmt.Printf("\nRekor UUID: %s", uuid)
 			}
 
 			return nil

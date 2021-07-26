@@ -34,7 +34,7 @@ func NewUploadCmd() *cobra.Command {
 
 	// uploadCmd represents the upload command
 	uploadCmd := &cobra.Command{
-		Use:   "upload",
+		Use:   "upload [PATH_TO_PACKAGED_CHART]",
 		Short: "Upload Signed Helm Chart",
 		RunE: func(cmd *cobra.Command, args []string) error {
 

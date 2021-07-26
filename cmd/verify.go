@@ -40,7 +40,7 @@ func NewVerifyCmd() *cobra.Command {
 
 	// searchCmd represents the upload command
 	verifyCmd := &cobra.Command{
-		Use:   "verify",
+		Use:   "verify [PATH_TO_PACKAGED_CHART]",
 		Short: "Verify a Signed Helm Chart",
 		RunE: func(cmd *cobra.Command, args []string) error {
 
