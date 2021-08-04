@@ -122,9 +122,9 @@ func NewVerifyCmd() *cobra.Command {
 			}
 
 			fmt.Println("Chart Verified Successfully From Helm entry:")
-			fmt.Println(fmt.Sprintf("\nRekor Server: %s", rekorServer))
-			fmt.Println(fmt.Sprintf("Rekor Index: %d", int(*logEntryAnon.LogIndex)))
-			fmt.Println(fmt.Sprintf("Rekor UUID: %s", uuid))
+			fmt.Printf("\nRekor Server: %s", rekorServer)
+			fmt.Printf("\nRekor Index: %d", int(*logEntryAnon.LogIndex))
+			fmt.Printf("\nRekor UUID: %s\n", uuid)
 
 			return nil
 		},

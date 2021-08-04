@@ -70,6 +70,8 @@ func NewSearchCmd() *cobra.Command {
 				fmt.Printf("\nRekor UUID: %s", uuid)
 			}
 
+			fmt.Printf("\n")
+
 			return nil
 		},
 	}

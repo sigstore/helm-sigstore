@@ -79,11 +79,7 @@ func (c *ChartManager) GetChartDigest() (string, error) {
 		return "", fmt.Errorf("error opening chart '%v': %w", c.ChartPath, err)
 	}
 
-	defer func() {
-		if err := file.Close(); err != nil {
-			errors.Wrap(err, "Failed to close file")
-		}
-	}()
+	defer file.Close()
 
 	hasher := sha256.New()
 	tee := io.TeeReader(file, hasher)

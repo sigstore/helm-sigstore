@@ -101,7 +101,7 @@ func NewUploadCmd() *cobra.Command {
 				newIndex = swag.Int64Value(entry.LogIndex)
 			}
 
-			fmt.Println(fmt.Sprintf("Created Helm entry at index %d, available at: %v%v\n", newIndex, rekorServer, string(uploadResponse.Location)))
+			fmt.Printf("\nCreated Helm entry at index %d, available at: %v%v\n", newIndex, rekorServer, string(uploadResponse.Location))
 			return nil
 		},
 	}
