@@ -39,7 +39,7 @@ The plugin binary will be available in the `bin` directory
 Before installing `helm-sigstore` as a Helm plugin, ensure that Helm is installed and configured on your machine. Then install the plugin.
 
 ```shell
-$ helm plugin install .
+$ helm plugin install https://github.com/sigstore/helm-sigstore
 ```
 
 Confirm the plugin is available in Helm
