@@ -14,6 +14,9 @@
 # limitations under the License.
 
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
+ifdef MAKEFILE_SHELL
+SHELL=$(MAKEFILE_SHELL)
+endif
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
 else
@@ -25,6 +28,8 @@ DISTDIR    := $(CURDIR)/dist
 BINNAME    := helm-sigstore
 
 # Set version variables for LDFLAGS
+GO := go
+CGO_ENABLED := 0
 GIT_VERSION ?= $(shell git describe --tags --always --dirty)
 GIT_HASH ?= $(shell git rev-parse HEAD)
 DATE_FMT = +'%Y-%m-%dT%H:%M:%SZ'
@@ -66,11 +71,19 @@ lint: golangci-lint ## Runs golangci-lint linter
 PLATFORMS=darwin linux windows
 ARCHITECTURES=amd64
 
+define buildartifacts
+if [ "$(1)" == "windows" ]; then \
+	PLATFORM_EXT=".exe"; \
+fi
+mkdir -p $(DISTDIR);
+GOOS=$(1) GOARCH=$(2) CGO_ENABLED=$(CGO_ENABLED) $(GO) build \
+	 -ldflags $(LDFLAGS) -o $(DISTDIR)/$(BINNAME)-$(GOOS)-$(GOARCH)$$(if [ "$(1)" == "windows" ]; then echo ".exe"; fi) main.go;
+sha256sum $(DISTDIR)/$(BINNAME)-$(1)-$(2)$$(if [ "$(1)" == "windows" ]; then echo ".exe"; fi) | awk '{print $$1}' > $(DISTDIR)/$(BINNAME)-$(1)-$(2)$$(if [ "$(1)" == "windows" ]; then echo ".exe"; fi).sha256;
+endef
+
 dist:
 	$(foreach GOOS, $(PLATFORMS),\
-		$(foreach GOARCH, $(ARCHITECTURES), $(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); \
-	go build -ldflags $(LDFLAGS) -o $(DISTDIR)/$(BINNAME)-$(GOOS)-$(GOARCH) main.go)))
-	shasum -a 256 $(DISTDIR)/$(BINNAME)-* > $(DISTDIR)/$(BINNAME).sha2556
+		$(foreach GOARCH, $(ARCHITECTURES), $(call buildartifacts,$(GOOS),$(GOARCH))))
 
 test:
 	go test ./...
