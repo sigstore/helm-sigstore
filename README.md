@@ -1,6 +1,7 @@
 # helm-sigstore
 
 [![Build Status](https://github.com/sigstore/helm-sigstore/workflows/CI/badge.svg?branch=main)](https://github.com/sigstore/helm-sigstore/actions?workflow=CI)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/helm-sigstore)](https://artifacthub.io/packages/search?repo=helm-sigstore)
 
 Plugin for [Helm](https://helm.sh/) to integrate the [sigstore](https://sigstore.dev/) ecosystem. Search, upload and verify signed Helm Charts in the [Rekor](https://github.com/sigstore/rekor) Transparency Log. 
 
