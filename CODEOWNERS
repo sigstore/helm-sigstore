@@ -1,1 +1,5 @@
 @sigstore/helm-sigstore-codeowners
+
+# The CODEOWNERS are managed via a GitHub team, but the current list is:
+# sabre1041
+# lukehinds
