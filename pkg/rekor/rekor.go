@@ -68,7 +68,7 @@ func (r *Rekor) Search(chartManager *chart.ChartManager) ([]string, error) {
 
 	params := index.NewSearchIndexParams()
 	params.Query = &models.SearchIndex{}
-	params.Query.Hash = hashVal
+	params.Query.Hash = fmt.Sprintf("%s:%s", models.HelmV001SchemaChartHashAlgorithmSha256, hashVal)
 
 	resp, err := r.rekorClient.Index.SearchIndex(params)
 
@@ -103,6 +103,8 @@ func (r *Rekor) Upload(request *RekorUploadRequest) (*RekorUploadResponse, error
 		switch e := err.(type) {
 		case *entries.CreateLogEntryConflict:
 			return nil, errors.New(fmt.Sprintf("Entry already exists: %s", e.Location.String()))
+		case *entries.CreateLogEntryBadRequest:
+			return nil, errors.New(fmt.Sprintf("Bad request against rekor: Code: %d, Message: %s", e.Payload.Code, e.Payload.Message))
 		default:
 			return nil, errors.Wrap(err, "Error Creating Log Entry")
 		}
