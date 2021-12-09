@@ -75,7 +75,8 @@ $ helm sigstore upload <path_to_packaged_chart>
 Created Helm entry at index 6821, available at: https://rekor.sigstore.dev/api/v1/log/entries/b30a142ef6c8b0480cd3e081fc99bc3d2a1a50ef60f68749c983a1479be6c4b9
 ```
 
-_NOTE_: The provenance file must be located in the same directory as the packaged chart
+_NOTE_: The provenance file must be located in the same directory as the packaged chart.
+> To generate a provenance file, please consult the official documentation of [Helm Provenance and Integrity](https://helm.sh/docs/topics/provenance/).
 
 ### Verify the Signed Chart from Rekor
 
