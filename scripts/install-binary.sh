@@ -71,7 +71,7 @@ verifySupported() {
 # getDownloadURL checks the latest available version.
 getDownloadURL() {
   #version=$(git -C "$HELM_PLUGIN_DIR" describe --tags --exact-match 2>/dev/null || :)
-  version="$(cat plugin.yaml | grep "version" | cut -d '"' -f 2)"
+  version="$(cat $HELM_PLUGIN_DIR/plugin.yaml | grep "version" | cut -d '"' -f 2)"
   if [ -n "$version" ]; then
     DOWNLOAD_URL="https://github.com/$PROJECT_GH/releases/download/v$version/$PROJECT_NAME-$OS-$ARCH"
   else
