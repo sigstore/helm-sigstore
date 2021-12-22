@@ -16,6 +16,6 @@
 package constants
 
 const (
-	REKOR_SERVER_VAR     = "REKOR_SERVER"
-	DEFAULT_REKOR_SERVER = "https://rekor.sigstore.dev"
+	RekorServerVar     = "REKOR_SERVER"
+	DefaultRekorServer = "https://rekor.sigstore.dev"
 )

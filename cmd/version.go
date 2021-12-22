@@ -49,7 +49,6 @@ type versionOptions struct {
 var versionOpts = &versionOptions{}
 
 func NewVersionCmd() *cobra.Command {
-
 	// verifyCmd represents the verify command
 	versionCmd := &cobra.Command{
 		Use:   "version",
@@ -63,7 +62,6 @@ func NewVersionCmd() *cobra.Command {
 		"Output in JSON format")
 
 	return versionCmd
-
 }
 
 func runVersion(opts *versionOptions) error {
