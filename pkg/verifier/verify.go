@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/sigstore/helm-sigstore/pkg/chart"
@@ -55,10 +56,21 @@ func (v *Verifier) VerifyRekor() error {
 		return errors.New(fmt.Sprintf("Error Comparing Chart Hash. Value Stored In Rekor Does Not Match Chart. Rekor: '%s'. Chart: '%s", rekorChartHash, chartHash))
 	}
 
-	// Verify Public Key and Signature
-	publicKeyCompare := bytes.Compare(v.PublicKey, []byte(v.Entry.HelmObj.PublicKey.Content))
-	if publicKeyCompare != 0 {
-		return errors.New("Error Comparing Public Key: Value Stored in Rekor Does Not Match Key Used to Sign Provenance File")
+	// Verify Public Key Fingerprints and Signature
+	rekorFingerprint, err := pgp.GetFingerprintFromPublicKey([]byte(v.Entry.HelmObj.PublicKey.Content))
+
+	if err != nil {
+		return errors.New("Failed to obtain fingerprint from Rekor public key")
+	}
+
+	providedPublicKey, err := pgp.GetFingerprintFromPublicKey(v.PublicKey)
+	if err != nil {
+		return errors.New("Failed to obtain fingerprint from provided public key")
+	}
+
+	publicKeyFingerprintCompare := strings.Compare(providedPublicKey, rekorFingerprint)
+	if publicKeyFingerprintCompare != 0 {
+		return errors.New("Error Comparing Public Key Fingerprints: Value Stored in Rekor Does Not Match Fingerprint of Provided Key")
 	}
 
 	armoredSignature, err := ioutil.ReadAll(*v.armoredSignatureReader)
