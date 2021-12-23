@@ -23,14 +23,16 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"golang.org/x/crypto/openpgp"
+
+	helm_v001 "github.com/sigstore/rekor/pkg/types/helm/v0.0.1"
+
 	"github.com/sigstore/helm-sigstore/pkg/chart"
 	"github.com/sigstore/helm-sigstore/pkg/pgp"
-	helm_v001 "github.com/sigstore/rekor/pkg/types/helm/v0.0.1"
-	"golang.org/x/crypto/openpgp"
 )
 
 type Verifier struct {
-	ChartManager           *chart.ChartManager
+	ChartManager           *chart.Manager
 	Entry                  *helm_v001.V001Entry
 	Keyring                openpgp.EntityList
 	armoredSignatureReader *io.Reader
@@ -38,7 +40,6 @@ type Verifier struct {
 }
 
 func (v *Verifier) VerifyRekor() error {
-
 	err := v.VerifyChart()
 
 	if err != nil {
@@ -49,28 +50,28 @@ func (v *Verifier) VerifyRekor() error {
 	chartHash, err := v.ChartManager.GetChartDigest()
 	rekorChartHash := *v.Entry.HelmObj.Chart.Hash.Value
 	if err != nil {
-		return errors.Wrap(err, "Failed to retrieve Chart Hash")
+		return errors.Wrap(err, "failed to retrieve Chart Hash")
 	}
 
 	if rekorChartHash != chartHash {
-		return errors.New(fmt.Sprintf("Error Comparing Chart Hash. Value Stored In Rekor Does Not Match Chart. Rekor: '%s'. Chart: '%s", rekorChartHash, chartHash))
+		return fmt.Errorf("failed comparing Chart Hash. Value Stored In Rekor Does Not Match Chart. Rekor: '%s'. Chart: '%s", rekorChartHash, chartHash)
 	}
 
 	// Verify Public Key Fingerprints and Signature
 	rekorFingerprint, err := pgp.GetFingerprintFromPublicKey([]byte(v.Entry.HelmObj.PublicKey.Content))
 
 	if err != nil {
-		return errors.New("Failed to obtain fingerprint from Rekor public key")
+		return errors.New("failed to obtain fingerprint from Rekor public key")
 	}
 
 	providedPublicKey, err := pgp.GetFingerprintFromPublicKey(v.PublicKey)
 	if err != nil {
-		return errors.New("Failed to obtain fingerprint from provided public key")
+		return errors.New("failed to obtain fingerprint from provided public key")
 	}
 
 	publicKeyFingerprintCompare := strings.Compare(providedPublicKey, rekorFingerprint)
 	if publicKeyFingerprintCompare != 0 {
-		return errors.New("Error Comparing Public Key Fingerprints: Value Stored in Rekor Does Not Match Fingerprint of Provided Key")
+		return errors.New("failed to comparing Public Key Fingerprints: Value Stored in Rekor Does Not Match Fingerprint of Provided Key")
 	}
 
 	armoredSignature, err := ioutil.ReadAll(*v.armoredSignatureReader)
@@ -80,26 +81,25 @@ func (v *Verifier) VerifyRekor() error {
 
 	signatureCompare := bytes.Compare(armoredSignature, []byte(v.Entry.HelmObj.Chart.Provenance.Content))
 	if signatureCompare != 0 {
-		return errors.New("Error Comparing Signature: Value Stored in Rekor Does Not Match Chart Provenance File")
+		return errors.New("failed comparing Signature: Value Stored in Rekor Does Not Match Chart Provenance File")
 	}
 
 	return nil
 }
 
 func (v *Verifier) VerifyChart() error {
-
 	// Get Provenance File
 	provenanceFile, err := v.ChartManager.ReadProvenanceFile()
 
 	if err != nil {
-		return errors.Wrap(err, "Failed to Read Provenance file")
+		return errors.Wrap(err, "reading Provenance file")
 	}
 
 	// Verify Signature by Performing Clearsign
 	signer, armoredSignatureReader, err := pgp.VerifySignature(provenanceFile, v.Keyring)
 
 	if err != nil {
-		return errors.Wrap(err, "Could not verify signature")
+		return errors.Wrap(err, "could not verify signature")
 	}
 
 	// Set Reader so that it can be used later
@@ -108,7 +108,7 @@ func (v *Verifier) VerifyChart() error {
 	publicKey, err := pgp.ExtractPublicKey(signer)
 
 	if err != nil {
-		return errors.Wrap(err, "Could not extract public key")
+		return errors.Wrap(err, "could not extract public key")
 	}
 
 	// Set Public key so that it can be used later

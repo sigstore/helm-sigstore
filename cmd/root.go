@@ -21,9 +21,10 @@ import (
 	"path/filepath"
 
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
+
 	"github.com/sigstore/helm-sigstore/pkg/constants"
 	"github.com/sigstore/helm-sigstore/pkg/types"
-	"github.com/spf13/cobra"
 )
 
 func NewRootCommand() *cobra.Command {
@@ -46,13 +47,11 @@ func NewRootCommand() *cobra.Command {
 	rootCmd.AddCommand(NewVersionCmd())
 
 	return rootCmd
-
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-
 	rootCmd := NewRootCommand()
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -61,27 +60,23 @@ func Execute() {
 }
 
 func addRekorFlags(cmd *cobra.Command, options *types.CLIOptions) {
-
-	cmd.PersistentFlags().StringVar(&options.RekorServer, "rekor-server", getEnv(constants.REKOR_SERVER_VAR, constants.DEFAULT_REKOR_SERVER), "server address:port")
-
+	cmd.PersistentFlags().StringVar(&options.RekorServer, "rekor-server", getEnv(constants.RekorServerVar, constants.DefaultRekorServer), "server address:port")
 }
 
 func addPkiFlags(cmd *cobra.Command, options *types.CLIOptions) {
-
 	cmd.PersistentFlags().StringVar(&options.PublicKey, "public-key", "", "location of the public key used to sign the chart")
 	cmd.PersistentFlags().StringVar(&options.Keyring, "keyring", getDefaultKeyring(), "location of a public keyring")
-
 }
 
 func getEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	}
+
 	return fallback
 }
 
 func getDefaultKeyring() string {
-
 	if env, ok := os.LookupEnv("KEYRING"); ok {
 		return env
 	}

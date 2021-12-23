@@ -21,31 +21,32 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/pkg/errors"
-	"github.com/sigstore/helm-sigstore/pkg/chart"
+
 	"github.com/sigstore/rekor/pkg/client"
 	generatedclient "github.com/sigstore/rekor/pkg/generated/client"
 	"github.com/sigstore/rekor/pkg/generated/client/entries"
 	"github.com/sigstore/rekor/pkg/generated/client/index"
 	"github.com/sigstore/rekor/pkg/generated/models"
 	helm_v001 "github.com/sigstore/rekor/pkg/types/helm/v0.0.1"
+
+	"github.com/sigstore/helm-sigstore/pkg/chart"
 )
 
 type Rekor struct {
 	rekorClient *generatedclient.Rekor
 }
 
-type RekorUploadRequest struct {
+type UploadRequest struct {
 	Provenance []byte
 	PublicKey  []byte
 }
 
-type RekorUploadResponse struct {
+type UploadResponse struct {
 	Location strfmt.URI
 	Payload  models.LogEntry
 }
 
 func NewRekor(rekorServer string) (*Rekor, error) {
-
 	r, err := client.GetRekorClient(rekorServer)
 
 	if err != nil {
@@ -55,11 +56,9 @@ func NewRekor(rekorServer string) (*Rekor, error) {
 	return &Rekor{
 		rekorClient: r,
 	}, nil
-
 }
 
-func (r *Rekor) Search(chartManager *chart.ChartManager) ([]string, error) {
-
+func (r *Rekor) Search(chartManager *chart.Manager) ([]string, error) {
 	hashVal, err := chartManager.GetChartDigest()
 
 	if err != nil {
@@ -77,11 +76,9 @@ func (r *Rekor) Search(chartManager *chart.ChartManager) ([]string, error) {
 	}
 
 	return resp.GetPayload(), nil
-
 }
 
-func (r *Rekor) Upload(request *RekorUploadRequest) (*RekorUploadResponse, error) {
-
+func (r *Rekor) Upload(request *UploadRequest) (*UploadResponse, error) {
 	params := entries.NewCreateLogEntryParams()
 
 	re := new(helm_v001.V001Entry)
@@ -100,25 +97,26 @@ func (r *Rekor) Upload(request *RekorUploadRequest) (*RekorUploadResponse, error
 
 	resp, err := r.rekorClient.Entries.CreateLogEntry(params)
 	if err != nil {
-		switch e := err.(type) {
-		case *entries.CreateLogEntryConflict:
-			return nil, errors.New(fmt.Sprintf("Entry already exists: %s", e.Location.String()))
-		case *entries.CreateLogEntryBadRequest:
-			return nil, errors.New(fmt.Sprintf("Bad request against rekor: Code: %d, Message: %s", e.Payload.Code, e.Payload.Message))
-		default:
-			return nil, errors.Wrap(err, "Error Creating Log Entry")
+		var entryConflict entries.CreateLogEntryConflict
+		if errors.As(err, &entryConflict) {
+			return nil, fmt.Errorf("entry already exists: %s", entryConflict.Location.String())
 		}
+
+		var entryBadRequest entries.CreateLogEntryBadRequest
+		if errors.As(err, &entryBadRequest) {
+			return nil, fmt.Errorf("bad request against rekor: Code: %d, Message: %s", entryBadRequest.Payload.Code, entryBadRequest.Payload.Message)
+		}
+
+		return nil, errors.Wrap(err, "creating Log Entry")
 	}
 
-	return &RekorUploadResponse{
+	return &UploadResponse{
 		Location: resp.Location,
 		Payload:  resp.Payload,
 	}, nil
-
 }
 
 func (r *Rekor) GetByUUID(uuid string) (*models.LogEntryAnon, error) {
-
 	params := entries.NewGetLogEntryByUUIDParams()
 	params.EntryUUID = uuid
 
@@ -128,15 +126,12 @@ func (r *Rekor) GetByUUID(uuid string) (*models.LogEntryAnon, error) {
 	}
 
 	for k, entry := range resp.Payload {
-
 		if k != uuid {
 			continue
 		}
 
 		return &entry, nil
-
 	}
 
 	return nil, errors.New("Unable to find LogEntry matching UUID")
-
 }

@@ -23,28 +23,26 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-
 	"strings"
 
 	"github.com/pkg/errors"
 )
 
-type ChartManager struct {
+type Manager struct {
 	ChartPath           string
 	ChartProvenancePath string
 	chartDigest         string
 }
 
-func NewChartManager(chartPath string) (*ChartManager, error) {
-
+func NewChartManager(chartPath string) (*Manager, error) {
 	_, err := os.Stat(chartPath)
 
 	if err != nil {
-		return nil, errors.Wrap(err, "Failed to Load Chart")
+		return nil, errors.Wrap(err, "failed to Load Chart")
 	}
 
 	if !strings.EqualFold(filepath.Ext(chartPath), ".tgz") {
-		return nil, errors.New("Chart is not a .tgz file")
+		return nil, errors.New("chart is not a .tgz file")
 	}
 
 	provfile := chartPath + ".prov"
@@ -52,14 +50,13 @@ func NewChartManager(chartPath string) (*ChartManager, error) {
 		return nil, errors.Wrapf(err, "could not load provenance file %s", provfile)
 	}
 
-	return &ChartManager{
+	return &Manager{
 		ChartPath:           chartPath,
 		ChartProvenancePath: provfile,
 	}, nil
-
 }
 
-func (c *ChartManager) ReadProvenanceFile() ([]byte, error) {
+func (c *Manager) ReadProvenanceFile() ([]byte, error) {
 	return readFile(c.ChartProvenancePath)
 }
 
@@ -67,8 +64,7 @@ func readFile(path string) ([]byte, error) {
 	return ioutil.ReadFile(path)
 }
 
-func (c *ChartManager) GetChartDigest() (string, error) {
-
+func (c *Manager) GetChartDigest() (string, error) {
 	if c.chartDigest != "" {
 		return c.chartDigest, nil
 	}
@@ -76,7 +72,7 @@ func (c *ChartManager) GetChartDigest() (string, error) {
 	file, err := os.Open(filepath.Clean(c.ChartPath))
 
 	if err != nil {
-		return "", fmt.Errorf("error opening chart '%v': %w", c.ChartPath, err)
+		return "", fmt.Errorf("failed opening chart '%v': %w", c.ChartPath, err)
 	}
 
 	defer file.Close()
@@ -85,11 +81,10 @@ func (c *ChartManager) GetChartDigest() (string, error) {
 	tee := io.TeeReader(file, hasher)
 
 	if _, err := ioutil.ReadAll(tee); err != nil {
-		return "", fmt.Errorf("error processing '%v': %w", c.ChartPath, err)
+		return "", fmt.Errorf("failed processing '%v': %w", c.ChartPath, err)
 	}
 
 	c.chartDigest = strings.ToLower(hex.EncodeToString(hasher.Sum(nil)))
 
 	return c.chartDigest, nil
-
 }

@@ -19,14 +19,14 @@ import (
 	"fmt"
 
 	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
+
 	"github.com/sigstore/helm-sigstore/pkg/chart"
 	"github.com/sigstore/helm-sigstore/pkg/rekor"
 	"github.com/sigstore/helm-sigstore/pkg/types"
-	"github.com/spf13/cobra"
 )
 
 func NewSearchCmd() *cobra.Command {
-
 	searchOptions := types.CLIOptions{}
 
 	// searchCmd represents the upload command
@@ -34,7 +34,6 @@ func NewSearchCmd() *cobra.Command {
 		Use:   "search [PATH_TO_PACKAGED_CHART]",
 		Short: "Search for a Signed Helm Chart",
 		RunE: func(cmd *cobra.Command, args []string) error {
-
 			if len(args) != 1 {
 				return errors.New("1 argument (Path to packaged chart) is required")
 			}
@@ -60,11 +59,10 @@ func NewSearchCmd() *cobra.Command {
 			}
 
 			if len(uuids) == 0 {
-				return errors.New(fmt.Sprintf("Unable to find an entry for Chart '%s'\n", chartManager.ChartPath))
+				return fmt.Errorf("unable to find an entry for Chart %q", chartManager.ChartPath)
 			}
 
 			fmt.Println("The Following Records were Found")
-
 			fmt.Printf("\nRekor Server: %s", searchOptions.RekorServer)
 			for _, uuid := range uuids {
 				fmt.Printf("\nRekor UUID: %s", uuid)

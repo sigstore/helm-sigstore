@@ -29,7 +29,6 @@ import (
 )
 
 func GetKeyring(keyRingPath string, publicKeyPath string) (openpgp.EntityList, error) {
-
 	var keyringEntityList openpgp.EntityList
 	var err error
 
@@ -49,16 +48,13 @@ func GetKeyring(keyRingPath string, publicKeyPath string) (openpgp.EntityList, e
 	}
 
 	return keyringEntityList, nil
-
 }
 
 func ExtractPublicKey(entity *openpgp.Entity) ([]byte, error) {
-
 	gotWriter := bytes.NewBuffer(nil)
 	wr, err := armor.Encode(gotWriter, openpgp.PublicKeyType, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to Encode")
-
 	}
 
 	if entity.Serialize(wr) != nil {
@@ -70,11 +66,9 @@ func ExtractPublicKey(entity *openpgp.Entity) ([]byte, error) {
 	}
 
 	return gotWriter.Bytes(), nil
-
 }
 
 func GetFingerprintFromPublicKey(content []byte) (string, error) {
-
 	entitylist, err := openpgp.ReadArmoredKeyRing(bytes.NewBuffer(content))
 	if err != nil {
 		return "", err
@@ -86,7 +80,6 @@ func GetFingerprintFromPublicKey(content []byte) (string, error) {
 }
 
 func VerifySignature(file []byte, keyring openpgp.EntityList) (*openpgp.Entity, *io.Reader, error) {
-
 	block, _ := clearsign.Decode(file)
 	if block == nil {
 		// There was no sig in the file.
@@ -103,7 +96,6 @@ func VerifySignature(file []byte, keyring openpgp.EntityList) (*openpgp.Entity, 
 	)
 
 	return signer, &armoredSignatureReader, err
-
 }
 
 func getKeyRingFromPublicKey(keypath string) (openpgp.EntityList, error) {
@@ -114,7 +106,6 @@ func getKeyRingFromPublicKey(keypath string) (openpgp.EntityList, error) {
 	defer f.Close()
 
 	return openpgp.ReadArmoredKeyRing(bufio.NewReader(f))
-
 }
 
 func loadKeyRing(ringpath string) (openpgp.EntityList, error) {
@@ -123,5 +114,6 @@ func loadKeyRing(ringpath string) (openpgp.EntityList, error) {
 		return nil, err
 	}
 	defer f.Close()
+
 	return openpgp.ReadKeyRing(f)
 }

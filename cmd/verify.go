@@ -17,25 +17,25 @@ package cmd
 
 import (
 	"bytes"
-	"fmt"
-
 	"encoding/base64"
+	"fmt"
 
 	"github.com/go-openapi/runtime"
 	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
+
+	"github.com/sigstore/rekor/pkg/generated/models"
+	rekortypes "github.com/sigstore/rekor/pkg/types"
+	helm_v001 "github.com/sigstore/rekor/pkg/types/helm/v0.0.1"
+
 	"github.com/sigstore/helm-sigstore/pkg/chart"
 	"github.com/sigstore/helm-sigstore/pkg/pgp"
 	"github.com/sigstore/helm-sigstore/pkg/rekor"
 	"github.com/sigstore/helm-sigstore/pkg/types"
 	"github.com/sigstore/helm-sigstore/pkg/verifier"
-	"github.com/sigstore/rekor/pkg/generated/models"
-	rekortypes "github.com/sigstore/rekor/pkg/types"
-	helm_v001 "github.com/sigstore/rekor/pkg/types/helm/v0.0.1"
-	"github.com/spf13/cobra"
 )
 
 func NewVerifyCmd() *cobra.Command {
-
 	verifyOptions := types.CLIOptions{}
 
 	// searchCmd represents the upload command
@@ -43,7 +43,6 @@ func NewVerifyCmd() *cobra.Command {
 		Use:   "verify [PATH_TO_PACKAGED_CHART]",
 		Short: "Verify a Signed Helm Chart",
 		RunE: func(cmd *cobra.Command, args []string) error {
-
 			if len(args) != 1 {
 				return errors.New("1 argument (Path to packaged chart) is required")
 			}
@@ -72,7 +71,7 @@ func NewVerifyCmd() *cobra.Command {
 			}
 
 			if len(uuids) == 0 {
-				return errors.New("Unable to verify Chart: No Record Found")
+				return errors.New("unable to verify Chart: No Record Found")
 			}
 
 			uuid := uuids[len(uuids)-1]
@@ -80,7 +79,7 @@ func NewVerifyCmd() *cobra.Command {
 			logEntryAnon, err := rekor.GetByUUID(uuid)
 
 			if err != nil {
-				return errors.Wrapf(err, "Error Retriving Log Entry: %s", uuid)
+				return errors.Wrapf(err, "retrieving Log Entry: %s", uuid)
 			}
 
 			b, err := base64.StdEncoding.DecodeString(logEntryAnon.Body.(string))
@@ -106,7 +105,7 @@ func NewVerifyCmd() *cobra.Command {
 			keyring, err := pgp.GetKeyring(keyringPath, publicKeyPath)
 
 			if err != nil {
-				return errors.Wrap(err, "Could not retrieve keyring")
+				return errors.Wrap(err, "could not retrieve keyring")
 			}
 
 			verifier := verifier.Verifier{

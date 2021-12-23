@@ -20,16 +20,16 @@ import (
 
 	"github.com/go-openapi/swag"
 	"github.com/pkg/errors"
+	"github.com/spf13/cobra"
+
 	"github.com/sigstore/helm-sigstore/pkg/chart"
 	"github.com/sigstore/helm-sigstore/pkg/pgp"
 	"github.com/sigstore/helm-sigstore/pkg/rekor"
 	"github.com/sigstore/helm-sigstore/pkg/types"
 	"github.com/sigstore/helm-sigstore/pkg/verifier"
-	"github.com/spf13/cobra"
 )
 
 func NewUploadCmd() *cobra.Command {
-
 	uploadOptions := types.CLIOptions{}
 
 	// uploadCmd represents the upload command
@@ -37,7 +37,6 @@ func NewUploadCmd() *cobra.Command {
 		Use:   "upload [PATH_TO_PACKAGED_CHART]",
 		Short: "Upload Signed Helm Chart",
 		RunE: func(cmd *cobra.Command, args []string) error {
-
 			if len(args) != 1 {
 				return errors.New("1 argument (Path to packaged chart) is required")
 			}
@@ -85,7 +84,7 @@ func NewUploadCmd() *cobra.Command {
 				return err
 			}
 
-			uploadRequest := &rekor.RekorUploadRequest{
+			uploadRequest := &rekor.UploadRequest{
 				Provenance: provenanceFile,
 				PublicKey:  verifier.PublicKey,
 			}
@@ -110,5 +109,4 @@ func NewUploadCmd() *cobra.Command {
 	addPkiFlags(uploadCmd, &uploadOptions)
 
 	return uploadCmd
-
 }
