@@ -23,9 +23,9 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-	"golang.org/x/crypto/openpgp"
-	"golang.org/x/crypto/openpgp/armor"
-	"golang.org/x/crypto/openpgp/clearsign"
+	"golang.org/x/crypto/openpgp"           // nolint see issue https://github.com/sigstore/helm-sigstore/issues/25
+	"golang.org/x/crypto/openpgp/armor"     // nolint see issue https://github.com/sigstore/helm-sigstore/issues/25
+	"golang.org/x/crypto/openpgp/clearsign" // nolint see issue https://github.com/sigstore/helm-sigstore/issues/25
 )
 
 func GetKeyring(keyRingPath string, publicKeyPath string) (openpgp.EntityList, error) {
