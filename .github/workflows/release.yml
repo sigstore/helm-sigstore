@@ -30,7 +30,7 @@ jobs:
         run: make test
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2.5.1
+        uses: golangci/golangci-lint-action@v2.5.2
         with:
           version: v1.39.0
           skip-go-installation: true
