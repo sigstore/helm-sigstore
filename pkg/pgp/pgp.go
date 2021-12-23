@@ -18,6 +18,7 @@ package pgp
 import (
 	"bufio"
 	"bytes"
+	"encoding/hex"
 	"io"
 	"os"
 
@@ -70,6 +71,18 @@ func ExtractPublicKey(entity *openpgp.Entity) ([]byte, error) {
 
 	return gotWriter.Bytes(), nil
 
+}
+
+func GetFingerprintFromPublicKey(content []byte) (string, error) {
+
+	entitylist, err := openpgp.ReadArmoredKeyRing(bytes.NewBuffer(content))
+	if err != nil {
+		return "", err
+	}
+
+	fingerprint := hex.EncodeToString(entitylist[0].PrimaryKey.Fingerprint[:])
+
+	return fingerprint, nil
 }
 
 func VerifySignature(file []byte, keyring openpgp.EntityList) (*openpgp.Entity, *io.Reader, error) {
