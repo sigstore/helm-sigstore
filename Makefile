@@ -46,17 +46,16 @@ ifeq ($(DIFF), 1)
 endif
 
 PKG=github.com/sigstore/helm-sigstore/cmd
+LDFLAGS=-X $(PKG).gitVersion=$(GIT_VERSION) -X $(PKG).gitCommit=$(GIT_HASH) -X $(PKG).gitTreeState=$(GIT_TREESTATE) -X $(PKG).buildDate=$(BUILD_DATE)
 
-LDFLAGS="-X $(PKG).gitVersion=$(GIT_VERSION) -X $(PKG).gitCommit=$(GIT_HASH) -X $(PKG).gitTreeState=$(GIT_TREESTATE) -X $(PKG).buildDate=$(BUILD_DATE)"
-
-.PHONY: all lint test clean sigstore dist
+.PHONY: all lint test clean sigstore build
 
 all: sigstore
 
 SRCS = $(shell find . -type f -name '*.go')
 
 sigstore: $(SRCS)
-	CGO_ENABLED=0 go build -ldflags $(LDFLAGS) -o '$(BINDIR)/$(BINNAME)' main.go
+	CGO_ENABLED=$(CGO_ENABLED) go build -trimpath -ldflags "$(LDFLAGS)" -o '$(BINDIR)/$(BINNAME)' .
 
 GOLANGCI_LINT = $(shell pwd)/bin/golangci-lint
 golangci-lint:
@@ -67,27 +66,32 @@ golangci-lint:
 lint: golangci-lint ## Runs golangci-lint linter
 	$(GOLANGCI_LINT) run  -n
 
-
-PLATFORMS=darwin linux windows
-ARCHITECTURES=amd64
-
-define buildartifacts
-if [ "$(1)" == "windows" ]; then \
-	PLATFORM_EXT=".exe"; \
-fi
-mkdir -p $(DISTDIR);
-GOOS=$(1) GOARCH=$(2) CGO_ENABLED=$(CGO_ENABLED) $(GO) build \
-	 -ldflags $(LDFLAGS) -o $(DISTDIR)/$(BINNAME)-$(GOOS)-$(GOARCH)$$(if [ "$(1)" == "windows" ]; then echo ".exe"; fi) main.go;
-sha256sum $(DISTDIR)/$(BINNAME)-$(1)-$(2)$$(if [ "$(1)" == "windows" ]; then echo ".exe"; fi) | awk '{print $$1}' > $(DISTDIR)/$(BINNAME)-$(1)-$(2)$$(if [ "$(1)" == "windows" ]; then echo ".exe"; fi).sha256;
-endef
-
-dist:
-	$(foreach GOOS, $(PLATFORMS),\
-		$(foreach GOARCH, $(ARCHITECTURES), $(call buildartifacts,$(GOOS),$(GOARCH))))
-
-test:
+test: ## Runs go tests
 	go test ./...
+
+##################
+# release section
+##################
+
+.PHONY: release
+release: ## Runs goreleaser in release mode
+	LDFLAGS="$(LDFLAGS)" goreleaser release --rm-dist
+
+# used when need to validate the goreleaser
+.PHONY: snapshot
+snapshot: ## Runs goreleaser in snapshot mode
+	LDFLAGS="$(LDFLAGS)" goreleaser release --skip-sign --skip-publish --snapshot --rm-dist
 
 clean:
 	rm -rf $(BINDIR)
 	rm -rf $(DISTDIR)
+
+##################
+# help
+##################
+
+help: # Display help
+	@awk -F ':|##' \
+		'/^[^\t].+?:.*?##/ {\
+			printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
+		}' $(MAKEFILE_LIST) | sort
