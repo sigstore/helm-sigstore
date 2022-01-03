@@ -1,69 +1,32 @@
 name: Release
+
 on:
   push:
     tags:
-      - "v*.*.*"
+      - 'v*'
+
+permissions:
+   contents: write # needed to write releases
+   id-token: write # needed for keyless signing
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.16
-        uses: actions/setup-go@v2
+      - uses: actions/setup-go@v2
         with:
-          go-version: 1.16
-        id: go
+          go-version: 1.16.x
 
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+      - uses: sigstore/cosign-installer@v1.4.1         # installs cosign
+      - uses: anchore/sbom-action/download-syft@v0.6.0 # installs syft
 
-      - name: Verify go.mod is sane
-        run: go mod tidy && git diff --no-patch --exit-code
+      - uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: go mod download
+      - uses: goreleaser/goreleaser-action@v2
+        with:
+          install-only: true
 
-      - name: Build
-        run: make
-
-      - name: Test
-        run: make test
-
-      - name: Make release binaries
-        run: make dist
-        env:
-          MAKEFILE_SHELL: /bin/bash
-
-      - name: Get the version
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" |tee -a $GITHUB_ENV
-
-      - name: Generate Changelog
-        run: |
-          LATEST_TAG=$(git tag --sort=creatordate | sed '$!d')
-          PREVIOUS_TAG=$(git tag --sort=creatordate | sed 'x;$!d')
-          if [ -z "${PREVIOUS_TAG}" ]; then
-            REV_RANGE=HEAD
-          else
-            REV_RANGE=${PREVIOUS_TAG}..${LATEST_TAG}
-          fi
-          git log --pretty=format:"- %s %H (%aN)" --no-merges ${REV_RANGE} > ${VERSION}-CHANGELOG.txt
-          cat ${VERSION}-CHANGELOG.txt
-
-      - name: Create release
-        uses: softprops/action-gh-release@v1
+      - name: release
+        run: make release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          body_path: ${{ env.VERSION }}-CHANGELOG.txt
-          draft: false
-          prerelease: false
-
-      - name: Upload release binaries
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
