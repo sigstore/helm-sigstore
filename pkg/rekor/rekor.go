@@ -17,6 +17,7 @@ package rekor
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -97,12 +98,12 @@ func (r *Rekor) Upload(request *UploadRequest) (*UploadResponse, error) {
 
 	resp, err := r.rekorClient.Entries.CreateLogEntry(params)
 	if err != nil {
-		var entryConflict entries.CreateLogEntryConflict
+		entryConflict := &entries.CreateLogEntryConflict{}
 		if errors.As(err, &entryConflict) {
-			return nil, fmt.Errorf("entry already exists: %s", entryConflict.Location.String())
+			return nil, fmt.Errorf("entry already exists: UUID: %s", filepath.Base(entryConflict.Location.String()))
 		}
 
-		var entryBadRequest entries.CreateLogEntryBadRequest
+		entryBadRequest := &entries.CreateLogEntryBadRequest{}
 		if errors.As(err, &entryBadRequest) {
 			return nil, fmt.Errorf("bad request against rekor: Code: %d, Message: %s", entryBadRequest.Payload.Code, entryBadRequest.Payload.Message)
 		}
