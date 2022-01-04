@@ -4,7 +4,7 @@
 
 **Rekor Server** 
 
-An instance of [Rekor] must be available since the majority of the commands interact with an instance. By default, the public instance ([https://rekor.sigstore.dev](https://rekor.sigstore.dev) is used). An alternate instance can be specified by using the `--rekor-server` flag or setting the `REKOR_SERVER` environment variable.
+An instance of [Rekor](https://github.com/sigstore/rekor) must be available since the majority of the commands interact with an instance. By default, the public instance ([https://rekor.sigstore.dev](https://rekor.sigstore.dev)) is used. An alternate instance can be specified by using the `--rekor-server` flag or setting the `REKOR_SERVER` environment variable.
 
 **GPG**
 
