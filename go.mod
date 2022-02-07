@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	cloud.google.com/go/kms v1.1.0 // indirect
-	github.com/go-openapi/runtime v0.22.0
+	github.com/go-openapi/runtime v0.23.0
 	github.com/go-openapi/strfmt v0.21.1
 	github.com/go-openapi/swag v0.21.1
 	github.com/mitchellh/go-homedir v1.1.0
