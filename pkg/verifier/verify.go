@@ -58,7 +58,7 @@ func (v *Verifier) VerifyRekor() error {
 	}
 
 	// Verify Public Key Fingerprints and Signature
-	rekorFingerprint, err := pgp.GetFingerprintFromPublicKey([]byte(v.Entry.HelmObj.PublicKey.Content))
+	rekorFingerprint, err := pgp.GetFingerprintFromPublicKey([]byte(*v.Entry.HelmObj.PublicKey.Content))
 
 	if err != nil {
 		return errors.New("failed to obtain fingerprint from Rekor public key")

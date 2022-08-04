@@ -2,13 +2,13 @@ name: verify
 
 on:
   push:
-    branches: [ 'main' ]
+    branches: ["main"]
   pull_request:
 
 permissions: read-all
 
 env:
-  GO_VERSION: 1.17.x
+  GO_VERSION: 1.18.x
 
 jobs:
   license-check:
@@ -37,8 +37,8 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3.2.0
+        uses: golangci/golangci-lint-action@v3
         timeout-minutes: 5
         with:
           # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
-          version: v1.44.2
+          version: v1.47.3

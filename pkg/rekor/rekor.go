@@ -28,6 +28,7 @@ import (
 	"github.com/sigstore/rekor/pkg/generated/client/entries"
 	"github.com/sigstore/rekor/pkg/generated/client/index"
 	"github.com/sigstore/rekor/pkg/generated/models"
+	"github.com/sigstore/rekor/pkg/sharding"
 	helm_v001 "github.com/sigstore/rekor/pkg/types/helm/v0.0.1"
 
 	"github.com/sigstore/helm-sigstore/pkg/chart"
@@ -88,7 +89,7 @@ func (r *Rekor) Upload(request *UploadRequest) (*UploadResponse, error) {
 	re.HelmObj.Chart.Provenance = &models.HelmV001SchemaChartProvenance{}
 	re.HelmObj.Chart.Provenance.Content = strfmt.Base64(request.Provenance)
 	re.HelmObj.PublicKey = &models.HelmV001SchemaPublicKey{}
-	re.HelmObj.PublicKey.Content = strfmt.Base64(request.PublicKey)
+	re.HelmObj.PublicKey.Content = (*strfmt.Base64)(&request.PublicKey)
 
 	entry := models.Helm{}
 	entry.APIVersion = swag.String(re.APIVersion())
@@ -126,8 +127,13 @@ func (r *Rekor) GetByUUID(uuid string) (*models.LogEntryAnon, error) {
 		return nil, err
 	}
 
+	u, err := sharding.GetUUIDFromIDString(params.EntryUUID)
+	if err != nil {
+		return nil, err
+	}
+
 	for k, entry := range resp.Payload {
-		if k != uuid {
+		if k != u {
 			continue
 		}
 
