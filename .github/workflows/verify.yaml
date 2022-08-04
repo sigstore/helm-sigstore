@@ -8,17 +8,18 @@ on:
 permissions: read-all
 
 env:
-  GO_VERSION: 1.18.x
+  GO_VERSION: 1.18
 
 jobs:
   license-check:
     name: license boilerplate check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3
+      - uses: actions/setup-go@84cbf8094393cdc5fe1fe1671ff2647332956b1a # v3
         with:
           go-version: ${{ env.GO_VERSION }}
+          check-latest: true
 
       - name: Install addlicense
         run: go install github.com/google/addlicense@latest
@@ -32,10 +33,12 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3
+      - uses: actions/setup-go@84cbf8094393cdc5fe1fe1671ff2647332956b1a # v3
         with:
           go-version: ${{ env.GO_VERSION }}
+          check-latest: true
+
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         timeout-minutes: 5

@@ -4,21 +4,19 @@ on:
     branches:
       - "main"
   pull_request:
-    branches:
-      - "*"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.18
-      - uses: actions/setup-go@v3
+        uses: actions/setup-go@84cbf8094393cdc5fe1fe1671ff2647332956b1a # v3
         with:
-          go-version: 1.18.x
-        id: go
+          go-version: 1.18
+          check-latest: true
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3
 
       - name: Verify go.mod is sane
         run: go mod tidy && git diff --no-patch --exit-code
