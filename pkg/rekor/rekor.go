@@ -127,13 +127,18 @@ func (r *Rekor) GetByUUID(uuid string) (*models.LogEntryAnon, error) {
 		return nil, err
 	}
 
-	u, err := sharding.GetUUIDFromIDString(params.EntryUUID)
-	if err != nil {
-		return nil, err
-	}
-
 	for k, entry := range resp.Payload {
-		if k != u {
+		requestUUID, err := sharding.GetUUIDFromIDString(params.EntryUUID)
+		if err != nil {
+			return nil, err
+		}
+
+		responseUUID, err := sharding.GetUUIDFromIDString(k)
+		if err != nil {
+			return nil, err
+		}
+
+		if requestUUID != responseUUID {
 			continue
 		}
 
