@@ -3,7 +3,7 @@ module github.com/sigstore/helm-sigstore
 go 1.18
 
 require (
-	github.com/go-openapi/runtime v0.24.1
+	github.com/go-openapi/runtime v0.24.2
 	github.com/go-openapi/strfmt v0.21.3
 	github.com/go-openapi/swag v0.22.3
 	github.com/mitchellh/go-homedir v1.1.0
