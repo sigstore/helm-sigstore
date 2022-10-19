@@ -1,6 +1,6 @@
 module github.com/sigstore/helm-sigstore
 
-go 1.18
+go 1.19
 
 require (
 	github.com/go-openapi/runtime v0.24.2
