@@ -8,7 +8,7 @@ on:
 permissions: read-all
 
 env:
-  GO_VERSION: 1.18
+  GO_VERSION: 1.19
 
 jobs:
   license-check:
@@ -43,5 +43,4 @@ jobs:
         uses: golangci/golangci-lint-action@0ad9a0988b3973e851ab0a07adf248ec2e100376 # v3.3.1
         timeout-minutes: 5
         with:
-          # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
-          version: v1.50.0
+          version: v1.50.1

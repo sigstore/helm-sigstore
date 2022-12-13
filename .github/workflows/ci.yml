@@ -18,6 +18,15 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
 
+      - uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7 # v3.0.11
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
       - name: Verify go.mod is sane
         run: go mod tidy && git diff --no-patch --exit-code
 
