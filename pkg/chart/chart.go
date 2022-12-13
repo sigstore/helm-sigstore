@@ -20,7 +20,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -61,7 +60,7 @@ func (c *Manager) ReadProvenanceFile() ([]byte, error) {
 }
 
 func readFile(path string) ([]byte, error) {
-	return ioutil.ReadFile(path)
+	return os.ReadFile(path)
 }
 
 func (c *Manager) GetChartDigest() (string, error) {
@@ -80,7 +79,7 @@ func (c *Manager) GetChartDigest() (string, error) {
 	hasher := sha256.New()
 	tee := io.TeeReader(file, hasher)
 
-	if _, err := ioutil.ReadAll(tee); err != nil {
+	if _, err := io.ReadAll(tee); err != nil {
 		return "", fmt.Errorf("failed processing '%v': %w", c.ChartPath, err)
 	}
 
