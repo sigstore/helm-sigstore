@@ -23,7 +23,7 @@ jobs:
 
       - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
 
-      - uses: goreleaser/goreleaser-action@23e0ed5919ab72a1ad1e8a55eb43f524d527d40c # v4.0.0
+      - uses: goreleaser/goreleaser-action@8f67e590f2d095516493f017008adc464e63adb1 # v4.1.0
         with:
           install-only: true
 
