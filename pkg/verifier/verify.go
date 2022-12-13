@@ -19,7 +19,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -74,7 +73,7 @@ func (v *Verifier) VerifyRekor() error {
 		return errors.New("failed to comparing Public Key Fingerprints: Value Stored in Rekor Does Not Match Fingerprint of Provided Key")
 	}
 
-	armoredSignature, err := ioutil.ReadAll(*v.armoredSignatureReader)
+	armoredSignature, err := io.ReadAll(*v.armoredSignatureReader)
 	if err != nil {
 		return err
 	}
