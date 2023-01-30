@@ -2,8 +2,9 @@
 
 [![Build Status](https://github.com/sigstore/helm-sigstore/workflows/CI/badge.svg?branch=main)](https://github.com/sigstore/helm-sigstore/actions?workflow=CI)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/helm-sigstore)](https://artifacthub.io/packages/search?repo=helm-sigstore)
+[![SLSA](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev/)
 
-Plugin for [Helm](https://helm.sh/) to integrate the [sigstore](https://sigstore.dev/) ecosystem. Search, upload and verify signed Helm Charts in the [Rekor](https://github.com/sigstore/rekor) Transparency Log. 
+Plugin for [Helm](https://helm.sh/) to integrate the [sigstore](https://sigstore.dev/) ecosystem. Search, upload and verify signed Helm Charts in the [Rekor](https://github.com/sigstore/rekor) Transparency Log.
 
 ## Info
 
@@ -48,8 +49,8 @@ Confirm the plugin is available in Helm
 ```
 $ helm plugin list
 
-NAME            VERSION         DESCRIPTION                                                                  
-sigstore        0.1.0           This plugin integrates Helm into the Sigstore ecosystem.                     
+NAME            VERSION         DESCRIPTION
+sigstore        0.1.0           This plugin integrates Helm into the Sigstore ecosystem.
 ```
 
 With the installation complete and successful, the plugin can be invoked through the `helm sigstore` command
@@ -92,7 +93,13 @@ Rekor Index: 6821
 Rekor UUID: b30a142ef6c8b0480cd3e081fc99bc3d2a1a50ef60f68749c983a1479be6c4b9
 ```
 
-See the [Usage documentation](USAGE.md) for detailed explanations and additional options. 
+See the [Usage documentation](USAGE.md) for detailed explanations and additional options.
+
+## SLSA Provenance
+This project generates SLSA provenance for its releases! This enables you to verify the integrity
+of the downloaded artifacts and ensure that the binary's code really comes from this source code.
+
+To verify the provenance of the release binaries, please follow the instructions [here](https://github.com/slsa-framework/slsa-github-generator#verification-of-provenance).
 
 ## Security
 
