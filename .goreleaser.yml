@@ -1,73 +1,71 @@
 project_name: helm-sigstore
 
 env:
-- GO111MODULE=on
-- COSIGN_EXPERIMENTAL=true
+  - GO111MODULE=on
+  - COSIGN_YES=true
 
 # Prevents parallel builds from stepping on each others toes downloading modules
 before:
   hooks:
-  - go mod tidy
+    - go mod tidy
 
 gomod:
   proxy: true
 
 builds:
-- binary: helm-sigstore-{{ .Os }}-{{ .Arch }}
-  no_unique_dist_dir: true
-  main: .
-  flags:
-  - -trimpath
-  mod_timestamp: "{{ .CommitTimestamp }}"
-  goos:
-  - linux
-  - windows
-  - darwin
-  goarch:
-  - amd64
-  - arm64
-  - arm
-  - s390x
-  - ppc64le
-  goarm:
-  - "7"
-  ignore:
-  - goos: windows
-    goarch: arm64
-  - goos: windows
-    goarch: arm
-  - goos: windows
-    goarch: s390x
-  - goos: windows
-    goarch: ppc64le
-  ldflags:
-  - "{{ .Env.LDFLAGS }}"
-  env:
-  - CGO_ENABLED=0
+  - binary: helm-sigstore-{{ .Os }}-{{ .Arch }}
+    no_unique_dist_dir: true
+    main: .
+    flags:
+      - -trimpath
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+      - s390x
+      - ppc64le
+    goarm:
+      - "7"
+    ignore:
+      - goos: windows
+        goarch: arm64
+      - goos: windows
+        goarch: arm
+      - goos: windows
+        goarch: s390x
+      - goos: windows
+        goarch: ppc64le
+    ldflags:
+      - "{{ .Env.LDFLAGS }}"
+    env:
+      - CGO_ENABLED=0
 
 signs:
   # Keyless
-- id: helm-sigstore-keyless
-  signature: "${artifact}.sig"
-  certificate: "${artifact}.pem"
-  env:
-  - COSIGN_EXPERIMENTAL=1
-  cmd: cosign
-  args:
-    - sign-blob
-    - "--output-certificate=${certificate}"
-    - "--output-signature=${signature}"
-    - "${artifact}"
-  artifacts: binary
-  output: true
+  - id: helm-sigstore-keyless
+    signature: "${artifact}.sig"
+    certificate: "${artifact}.pem"
+    cmd: cosign
+    args:
+      - sign-blob
+      - "--output-certificate=${certificate}"
+      - "--output-signature=${signature}"
+      - "${artifact}"
+    artifacts: binary
+    output: true
 
 archives:
-- format: binary
-  name_template: "{{ .Binary }}"
-  allow_different_binary_count: true
+  - format: binary
+    name_template: "{{ .Binary }}"
+    allow_different_binary_count: true
 
 sboms:
-- artifacts: binary
+  - artifacts: binary
 
 checksum:
   name_template: "checksums.txt"

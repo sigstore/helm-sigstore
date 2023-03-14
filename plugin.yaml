@@ -1,5 +1,5 @@
 name: "sigstore"
-version: "0.1.7"
+version: "0.2.0"
 usage: "Integrates Helm into Sigstore"
 description: |-
   This plugin integrates Helm into the Sigstore ecosystem.
