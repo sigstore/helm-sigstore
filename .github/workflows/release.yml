@@ -21,10 +21,13 @@ jobs:
       tag_name: ${{ steps.tag.outputs.tag_name }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
       - name: Set Go Version
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
-          go-version: '1.20'
+          go-version-file: './go.mod'
           check-latest: true
 
       - name: Install Cosign
@@ -32,9 +35,6 @@ jobs:
 
       - name: Install Syft
         uses: anchore/sbom-action/download-syft@5ecf649a417b8ae17dc8383dc32d46c03f2312df # v0.15.1
-
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Set LDFLAGS
         id: ldflags
