@@ -90,6 +90,9 @@ func (r *Rekor) Upload(request *UploadRequest) (*UploadResponse, error) {
 	re.HelmObj.Chart.Provenance.Content = strfmt.Base64(request.Provenance)
 	re.HelmObj.PublicKey = &models.HelmV001SchemaPublicKey{}
 	re.HelmObj.PublicKey.Content = (*strfmt.Base64)(&request.PublicKey)
+	if ok, err := re.Insertable(); !ok {
+		return nil, err
+	}
 
 	entry := models.Helm{}
 	entry.APIVersion = swag.String(re.APIVersion())

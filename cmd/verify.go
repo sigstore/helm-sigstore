@@ -91,7 +91,7 @@ func NewVerifyCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			eimpl, err := rekortypes.CreateVersionedEntry(pe)
+			eimpl, err := rekortypes.UnmarshalEntry(pe)
 			if err != nil {
 				return err
 			}

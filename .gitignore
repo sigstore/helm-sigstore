@@ -21,3 +21,8 @@ dist
 # OSX
 .DS_Store
 .vscode
+.idea
+
+helm-sigstore-test/
+helm-sigstore-test-0.1.0.tgz
+.gnupg/
