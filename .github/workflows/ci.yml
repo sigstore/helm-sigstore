@@ -27,6 +27,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      - name: Setup Bats and bats libs
+        uses: bats-core/bats-action@e4efaa4edd28f6c43ea5bd55c0a23bdd62360100 # v1.5.4
+
       - name: Verify go.mod is sane
         run: go mod tidy && git diff --no-patch --exit-code
 
@@ -38,3 +41,18 @@ jobs:
 
       - name: Test
         run: make test
+
+      - name: Create Integration Pre-Reqs
+        run: ./scripts/generate-test-chart.sh
+
+      - name: Upload helm-sigstore-test-0.1.0.tgz
+        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        with:
+          name: helm-sigstore-test-0.1.0.tgz
+          path: |
+            helm-sigstore-test-0.1.0.tgz
+            helm-sigstore-test-0.1.0.tgz.prov
+            .gnupg/sigstore-secring.gpg
+
+      - name: Integration Test
+        run: make integration

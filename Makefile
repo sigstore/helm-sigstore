@@ -69,6 +69,10 @@ lint: golangci-lint ## Runs golangci-lint linter
 test: ## Runs go tests
 	go test ./...
 
+integration: ## Runs integration tests
+	command -v bats &> /dev/null || { echo >&2 'ERROR: bats not installed; see: https://bats-core.readthedocs.io/en/stable/installation.html - Aborting'; exit 1; }
+	bats --verbose-run tests/integration.sh
+
 ##################
 # release section
 ##################
