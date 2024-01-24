@@ -3,9 +3,9 @@ module github.com/sigstore/helm-sigstore
 go 1.21
 
 require (
-	github.com/go-openapi/runtime v0.26.2
+	github.com/go-openapi/runtime v0.27.0
 	github.com/go-openapi/strfmt v0.22.0
-	github.com/go-openapi/swag v0.22.7
+	github.com/go-openapi/swag v0.22.8
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/sigstore/rekor v1.3.4
@@ -20,13 +20,13 @@ require (
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-openapi/analysis v0.21.4 // indirect
+	github.com/go-openapi/analysis v0.21.5 // indirect
 	github.com/go-openapi/errors v0.21.0 // indirect
-	github.com/go-openapi/jsonpointer v0.20.0 // indirect
-	github.com/go-openapi/jsonreference v0.20.2 // indirect
-	github.com/go-openapi/loads v0.21.2 // indirect
-	github.com/go-openapi/spec v0.20.11 // indirect
-	github.com/go-openapi/validate v0.22.3 // indirect
+	github.com/go-openapi/jsonpointer v0.20.1 // indirect
+	github.com/go-openapi/jsonreference v0.20.3 // indirect
+	github.com/go-openapi/loads v0.21.3 // indirect
+	github.com/go-openapi/spec v0.20.12 // indirect
+	github.com/go-openapi/validate v0.22.4 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-containerregistry v0.16.1 // indirect
 	github.com/google/trillian v1.5.3 // indirect
