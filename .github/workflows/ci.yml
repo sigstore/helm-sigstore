@@ -28,7 +28,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Setup Bats and bats libs
-        uses: bats-core/bats-action@dae28e5c0d0d2ecf297b7d8d1ae143f464ca3ee8 # v1.5.5
+        uses: bats-core/bats-action@0ae349dad1aa69308725a48b91b5d6ca647040bc # v1.5.6
 
       - name: Verify go.mod is sane
         run: go mod tidy && git diff --no-patch --exit-code
