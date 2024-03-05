@@ -3,14 +3,14 @@ module github.com/sigstore/helm-sigstore
 go 1.21
 
 require (
-	github.com/go-openapi/runtime v0.27.1
+	github.com/go-openapi/runtime v0.27.2
 	github.com/go-openapi/strfmt v0.22.2
 	github.com/go-openapi/swag v0.22.10
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/sigstore/rekor v1.3.5
 	github.com/spf13/cobra v1.8.0
-	golang.org/x/crypto v0.20.0
+	golang.org/x/crypto v0.21.0
 )
 
 require (
@@ -20,13 +20,13 @@ require (
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-openapi/analysis v0.22.0 // indirect
+	github.com/go-openapi/analysis v0.22.2 // indirect
 	github.com/go-openapi/errors v0.21.1 // indirect
 	github.com/go-openapi/jsonpointer v0.20.2 // indirect
 	github.com/go-openapi/jsonreference v0.20.4 // indirect
 	github.com/go-openapi/loads v0.21.5 // indirect
 	github.com/go-openapi/spec v0.20.14 // indirect
-	github.com/go-openapi/validate v0.22.6 // indirect
+	github.com/go-openapi/validate v0.23.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-containerregistry v0.17.0 // indirect
 	github.com/google/trillian v1.6.0 // indirect
@@ -58,8 +58,8 @@ require (
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.17.0 // indirect
-	golang.org/x/term v0.17.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240116215550-a9fa1716bcac // indirect
 	google.golang.org/grpc v1.61.0 // indirect
