@@ -33,7 +33,7 @@ func NewSearchCmd() *cobra.Command {
 	searchCmd := &cobra.Command{
 		Use:   "search [PATH_TO_PACKAGED_CHART]",
 		Short: "Search for a Signed Helm Chart",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return errors.New("1 argument (Path to packaged chart) is required")
 			}

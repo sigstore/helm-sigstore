@@ -36,7 +36,7 @@ func NewUploadCmd() *cobra.Command {
 	uploadCmd := &cobra.Command{
 		Use:   "upload [PATH_TO_PACKAGED_CHART]",
 		Short: "Upload Signed Helm Chart",
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(_ *cobra.Command, args []string) error {
 			if len(args) != 1 {
 				return errors.New("1 argument (Path to packaged chart) is required")
 			}

@@ -12,20 +12,11 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
 
-      - name: Set up Go 1.21
+      - name: Set up Go
         uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
           go-version-file: './go.mod'
           check-latest: true
-
-      - uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4.0.1
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
 
       - name: Setup Bats and bats libs
         uses: bats-core/bats-action@0ae349dad1aa69308725a48b91b5d6ca647040bc # v1.5.6
