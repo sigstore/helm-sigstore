@@ -19,7 +19,7 @@ jobs:
           check-latest: true
 
       - name: Setup Bats and bats libs
-        uses: bats-core/bats-action@0ae349dad1aa69308725a48b91b5d6ca647040bc # v1.5.6
+        uses: bats-core/bats-action@472edde1138d59aca53ff162fb8d996666d21e4a # v2.0.0
 
       - name: Verify go.mod is sane
         run: go mod tidy && git diff --no-patch --exit-code
