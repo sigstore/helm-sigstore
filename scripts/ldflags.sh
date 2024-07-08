@@ -38,7 +38,7 @@ function ldflags() {
       local BUILD_DATE=$(date -u -d "@$SOURCE_DATE_EPOCH" "$DATE_FMT" 2>/dev/null || date -u -r "$SOURCE_DATE_EPOCH" "$DATE_FMT" 2>/dev/null || date -u "$DATE_FMT")
   fi
 
-  echo "-buildid= -X github.com/sigstore/helm-sigstore/cmd/version.gitVersion=$GIT_VERSION \
+  echo "-buildid= -X github.com/sigstore/helm-sigstore/cmd.gitVersion=$GIT_VERSION \
         -X github.com/sigstore/helm-sigstore/cmd.gitCommit=$GIT_COMMIT \
         -X github.com/sigstore/helm-sigstore/cmd.gitTreeState=$GIT_TREESTATE \
         -X github.com/sigstore/helm-sigstore/cmd.buildDate=$BUILD_DATE"

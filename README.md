@@ -1,6 +1,6 @@
 # helm-sigstore
 
-[![Build Status](https://github.com/sigstore/helm-sigstore/workflows/CI/badge.svg?branch=main)](https://github.com/sigstore/helm-sigstore/actions?workflow=CI)
+[![Build Status](https://github.com/sigstore/helm-sigstore/workflows/ci/badge.svg?branch=main)](https://github.com/sigstore/helm-sigstore/actions?workflow=ci)
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/helm-sigstore)](https://artifacthub.io/packages/search?repo=helm-sigstore)
 [![SLSA](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev/)
 
