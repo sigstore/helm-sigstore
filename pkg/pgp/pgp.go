@@ -75,9 +75,7 @@ func GetFingerprintFromPublicKey(content []byte) (string, error) {
 		return "", err
 	}
 
-	fingerprint := hex.EncodeToString(entitylist[0].PrimaryKey.Fingerprint[:])
-
-	return fingerprint, nil
+	return hex.EncodeToString(entitylist[0].PrimaryKey.Fingerprint), nil
 }
 
 func VerifySignature(file []byte, keyring openpgp.EntityList) (*openpgp.Entity, *io.Reader, error) {
