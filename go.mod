@@ -1,7 +1,8 @@
 module github.com/sigstore/helm-sigstore
 
-go 1.22
-toolchain go1.22.5
+go 1.22.0
+
+toolchain go1.23.4
 
 require (
 	github.com/ProtonMail/go-crypto v1.1.5
