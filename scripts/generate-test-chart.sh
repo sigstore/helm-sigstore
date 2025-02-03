@@ -15,7 +15,7 @@
 
 echo "Creating throw away key..."
 mkdir -p .gnupg
-gpg --batch --passphrase '' --quick-generate-key "helm-sigstore-test"
+gpg --batch --passphrase '' --quick-generate-key "helm-sigstore-test" rsa4096 default 1y
 gpg --export-secret-keys > .gnupg/sigstore-secring.gpg
 
 echo "Creating, packaging and signing chart temp chart..."
