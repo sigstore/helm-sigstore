@@ -22,10 +22,11 @@ import (
 	"io"
 	"os"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
+	"github.com/ProtonMail/go-crypto/openpgp/armor"
+	"github.com/ProtonMail/go-crypto/openpgp/clearsign"
+	"github.com/ProtonMail/go-crypto/openpgp/packet"
 	"github.com/pkg/errors"
-	"golang.org/x/crypto/openpgp"           // nolint see issue https://github.com/sigstore/helm-sigstore/issues/25
-	"golang.org/x/crypto/openpgp/armor"     // nolint see issue https://github.com/sigstore/helm-sigstore/issues/25
-	"golang.org/x/crypto/openpgp/clearsign" // nolint see issue https://github.com/sigstore/helm-sigstore/issues/25
 )
 
 func GetKeyring(keyRingPath string, publicKeyPath string) (openpgp.EntityList, error) {
@@ -74,9 +75,7 @@ func GetFingerprintFromPublicKey(content []byte) (string, error) {
 		return "", err
 	}
 
-	fingerprint := hex.EncodeToString(entitylist[0].PrimaryKey.Fingerprint[:])
-
-	return fingerprint, nil
+	return hex.EncodeToString(entitylist[0].PrimaryKey.Fingerprint), nil
 }
 
 func VerifySignature(file []byte, keyring openpgp.EntityList) (*openpgp.Entity, *io.Reader, error) {
@@ -93,6 +92,7 @@ func VerifySignature(file []byte, keyring openpgp.EntityList) (*openpgp.Entity, 
 		keyring,
 		bytes.NewBuffer(block.Bytes),
 		block.ArmoredSignature.Body,
+		&packet.Config{},
 	)
 
 	return signer, &armoredSignatureReader, err

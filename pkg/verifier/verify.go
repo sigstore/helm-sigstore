@@ -21,8 +21,8 @@ import (
 	"io"
 	"strings"
 
+	"github.com/ProtonMail/go-crypto/openpgp"
 	"github.com/pkg/errors"
-	"golang.org/x/crypto/openpgp" // nolint see issue https://github.com/sigstore/helm-sigstore/issues/25
 
 	helm_v001 "github.com/sigstore/rekor/pkg/types/helm/v0.0.1"
 
