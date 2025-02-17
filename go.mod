@@ -12,7 +12,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/sigstore/rekor v1.3.9
-	github.com/spf13/cobra v1.8.1
+	github.com/spf13/cobra v1.9.1
 )
 
 require (
@@ -101,7 +101,7 @@ require (
 	github.com/sigstore/sigstore/pkg/signature/kms/azure v1.8.12 // indirect
 	github.com/sigstore/sigstore/pkg/signature/kms/gcp v1.8.12 // indirect
 	github.com/sigstore/sigstore/pkg/signature/kms/hashivault v1.8.12 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/theupdateframework/go-tuf v0.7.0 // indirect
 	github.com/tink-crypto/tink-go-awskms/v2 v2.1.0 // indirect
 	github.com/tink-crypto/tink-go-gcpkms/v2 v2.2.0 // indirect
