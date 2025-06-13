@@ -61,7 +61,7 @@ signs:
     output: true
 
 archives:
-  - format: binary
+  - formats: [binary]
     name_template: "{{ .Binary }}"
     allow_different_binary_count: true
 
@@ -72,7 +72,7 @@ checksum:
   name_template: "checksums.txt"
 
 snapshot:
-  name_template: SNAPSHOT-{{ .ShortCommit }}
+  version_template: SNAPSHOT-{{ .ShortCommit }}
 
 release:
   prerelease: allow
