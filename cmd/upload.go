@@ -18,7 +18,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/go-openapi/swag"
+	"github.com/go-openapi/swag/conv"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
@@ -97,7 +97,7 @@ func NewUploadCmd() *cobra.Command {
 
 			var newIndex int64
 			for _, entry := range uploadResponse.Payload {
-				newIndex = swag.Int64Value(entry.LogIndex)
+				newIndex = conv.Value(entry.LogIndex)
 			}
 
 			fmt.Printf("\nCreated Helm entry at index %d, available at: %v%v\n", newIndex, rekorServer, string(uploadResponse.Location))

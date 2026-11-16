@@ -20,7 +20,7 @@ import (
 	"path/filepath"
 
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
+	"github.com/go-openapi/swag/conv"
 	"github.com/pkg/errors"
 
 	"github.com/sigstore/rekor/pkg/client"
@@ -95,7 +95,7 @@ func (r *Rekor) Upload(request *UploadRequest) (*UploadResponse, error) {
 	}
 
 	entry := models.Helm{}
-	entry.APIVersion = swag.String(re.APIVersion())
+	entry.APIVersion = conv.Pointer(re.APIVersion())
 	entry.Spec = re.HelmObj
 
 	params.SetProposedEntry(&entry)
