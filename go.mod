@@ -9,7 +9,7 @@ require (
 	github.com/go-openapi/swag/conv v0.29.2
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.9.1
-	github.com/sigstore/rekor v1.5.6
+	github.com/sigstore/rekor v1.6.1
 	github.com/spf13/cobra v1.10.2
 )
 
@@ -103,7 +103,7 @@ require (
 	github.com/sigstore/sigstore v1.11.3 // indirect
 	github.com/sigstore/sigstore/pkg/signature/kms/aws v1.11.3 // indirect
 	github.com/sigstore/sigstore/pkg/signature/kms/azure v1.11.3 // indirect
-	github.com/sigstore/sigstore/pkg/signature/kms/gcp v1.11.1 // indirect
+	github.com/sigstore/sigstore/pkg/signature/kms/gcp v1.11.2 // indirect
 	github.com/sigstore/sigstore/pkg/signature/kms/hashivault v1.11.3 // indirect
 	github.com/spf13/pflag v1.1.0 // indirect
 	github.com/theupdateframework/go-tuf v0.7.0 // indirect
@@ -128,7 +128,7 @@ require (
 	golang.org/x/mod v0.42.0 // indirect
 	golang.org/x/net v0.62.0 // indirect
 	golang.org/x/oauth2 v0.37.0 // indirect
-	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/sync v0.25.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/term v0.47.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
