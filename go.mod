@@ -9,7 +9,7 @@ require (
 	github.com/go-openapi/swag/conv v0.29.2
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.9.1
-	github.com/sigstore/rekor v1.6.3
+	github.com/sigstore/rekor v1.6.5
 	github.com/spf13/cobra v1.10.2
 )
 
